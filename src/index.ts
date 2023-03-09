@@ -32,6 +32,7 @@ const indexApi = new Index();
 indexApi.routerApi(app);
 
 app.use(error.logErrors);
+app.use(error.ormErrorHandler)
 app.use(error.boomErrorHandler);
 app.use(error.errorHandler);
 app.listen(port, () => {

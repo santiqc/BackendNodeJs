@@ -6,9 +6,9 @@ import { ProductSchemas } from "../schemas/product.schema";
 
 export class ProductRouter {
   public product: express.Express;
-  public service = new ProductsService();
-  public schemas = new ProductSchemas();
-  public validate = new ValidateHandler();
+  private service = new ProductsService();
+  private schemas = new ProductSchemas();
+  private validate = new ValidateHandler();
 
   constructor() {
     this.product = express();
