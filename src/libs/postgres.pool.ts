@@ -1,10 +1,16 @@
 const { Pool } = require("pg");
-import config from "../config/config";
+import config from "./../config/config";
 
-const USER = encodeURIComponent(config.dbUser);
-const PASSWORD = encodeURIComponent(config.dbPassword);
-const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
+const options: any = {
+  connectionString: config.dbUrl,
+};
 
-const pool = new Pool({ connectionString: URI });
+if (config.isProd) {
+  options.ssl = {
+    rejectUnauthorized: false,
+  };
+}
+
+const pool = new Pool(options);
 
 export default pool;
