@@ -1,16 +1,19 @@
 import * as express from "express";
 import * as cors from "cors";
-import { Index } from "./server";
+import * as passport from "passport";
+import { Index } from "./router/server";
 ("./app/server/index");
 import { ErrorHandler } from "./middlewares/error.handler";
 import Auth from "./middlewares/auth.handler";
+import { IndexAuth } from "./utils/auth/index";
 
 const app = express();
 const port = process.env.PORT || 3000;
 const error = new ErrorHandler();
+const auth = new IndexAuth();
 
 
-
+app.use(passport.initialize());
 app.use(express.json());
 const whitelist = ["http://localhost:8080", "https://myapp.co"];
 const options = {
@@ -23,6 +26,7 @@ const options = {
   },
 };
 app.use(cors(options));
+auth.ngOnInit();
 
 app.get("/", (req: any, res: any) => {
   res.send("Hola mi server en express");

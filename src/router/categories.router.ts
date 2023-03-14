@@ -1,8 +1,10 @@
 import * as express from "express";
+import * as passport from "passport";
 
 import { CategoryService } from "../services/category-srv";
 import { ValidateHandler } from "../middlewares/validate.handler";
 import { CategorySchemas } from "../schemas/category.schema";
+import Auth from "../middlewares/auth.handler";
 
 export class CategoriesRouter {
   public category: express.Express;
@@ -40,8 +42,9 @@ export class CategoriesRouter {
 
     routerCategory.post(
       "/",
+      passport.authenticate("jwt", { session: false }),
+      Auth.chackRoles("admin"),
       this.validate.validator(this.schemas.createCategorySchema(), "body"),
-
       async (req, res, next) => {
         try {
           const body = req.body;

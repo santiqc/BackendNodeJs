@@ -1,4 +1,4 @@
-const { Sequelize } = require("sequelize");
+import { Sequelize } from 'sequelize-typescript';
 
 import config from "./../config/config";
 import setupModels from "../db/models";
@@ -16,7 +16,7 @@ if (config.isProd) {
   };
 }
 
-const sequelize = new Sequelize(config.dbUrl, options);
+const sequelize:any = new Sequelize(config.dbUrl, options);
 
 setupModels(sequelize);
 

@@ -1,9 +1,9 @@
-import { ProductRouter } from "../router/products.router";
-import { UserRouter } from "../router/users.router";
-import { CategoriesRouter } from "../router/categories.router";
-import { OrdersRouter } from "../router/orders.router";
-import { CustomerRouter } from "../router/customer.router";
-
+import { ProductRouter } from "../products.router";
+import { UserRouter } from "../users.router";
+import { CategoriesRouter } from "../categories.router";
+import { OrdersRouter } from "../orders.router";
+import { CustomerRouter } from "../customer.router";
+import { AuthRouter } from "../auth.router"
 import * as express from "express";
 
 export class Index {
@@ -12,6 +12,8 @@ export class Index {
   public routerCategories = new CategoriesRouter();
   public routerOrdes = new OrdersRouter();
   public routerCustomer = new CustomerRouter();
+  public routerAuth = new AuthRouter();
+
 
   constructor() {}
   public routerApi(app: any) {
@@ -22,5 +24,6 @@ export class Index {
     router.use("/users", this.routerUsers.user);
     router.use("/orders", this.routerOrdes.order);
     router.use("/customers", this.routerCustomer.customer);
+    router.use("/auth", this.routerAuth.auth);
   }
 }

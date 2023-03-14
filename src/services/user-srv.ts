@@ -1,22 +1,43 @@
 const boom = require("@hapi/boom");
 
-import models from "./../libs/sequelize";
+import sequelize from "./../libs/sequelize";
+import { HashPassword } from "../hashPasword/pass-hash";
 
 export class UserService {
-  constructor() {}
+  private hashPasword = new HashPassword();
+  private array: any[];
+  constructor() {
+    this.array = [];
+  }
 
   public async create(data: any) {
-    const newUser = await models.User.create(data);
-    return newUser;
+    const password = await this.hashPasword.hash(data.password);
+    const newData = {
+      ...data,
+      password,
+    };
+    delete newData.password;
+    return newData;
+    // const newUser = await models.User.create(data);
+    // return newUser;
   }
 
   public async find() {
-    const rta = await models.User.findAll();
+    const rta = await sequelize.User.findAll();
     return rta;
   }
 
   public async findOne(id: string) {
-    const user = await models.User.findByPk(id);
+    const user = await sequelize.User.findOne(id);
+    if (!user) {
+      throw boom.notFound("user not found");
+    }
+    return user;
+  }
+  public async findByEmail(email: string) {
+        const user = await sequelize.User.findOne({
+      where: { email }
+    });
     if (!user) {
       throw boom.notFound("user not found");
     }
